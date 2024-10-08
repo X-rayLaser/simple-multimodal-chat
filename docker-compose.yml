@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./fastapi.Dockerfile
+    volumes:
+      - ./fastapi:/fastapi
+    ports:
+      - "8000:8000"
+  react-app:
+    build:
+      context: .
+      dockerfile: ./react.Dockerfile
+    volumes:
+      - ./react:/react
+    ports:
+      - "3000:3000"

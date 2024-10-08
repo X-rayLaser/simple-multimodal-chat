@@ -1,0 +1,6 @@
+react/node_modules/
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.ico

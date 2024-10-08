@@ -1,0 +1,36 @@
+
+.progress-bar-container {
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+  
+  .progress-bar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: linear-gradient(90deg, #cce4ff, #007bff);
+    overflow: hidden;
+  }
+  
+  .progress-slider {
+    width: 30%; /* Size of the slider */
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    left: 0;
+    animation: slide 1.5s linear infinite;
+  }
+  
+  @keyframes slide {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  

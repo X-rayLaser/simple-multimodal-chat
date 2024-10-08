@@ -1,0 +1,5 @@
+transformers>=4.45.0
+qwen-vl-utils
+bitsandbytes
+fastapi[standard]
+pydantic

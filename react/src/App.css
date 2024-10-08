@@ -1,0 +1,660 @@
+.navbar {
+  display: block;
+  width: 100%;
+  background-color: #413179;
+  position: fixed;
+  top: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul {
+  text-decoration: none;
+  color: #fff;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar li {
+  display: inline-block;
+  border-right: 1px solid #584e75;
+  padding: 15px;
+}
+
+.navbar li a {
+  color: #7ab0ff;
+
+  text-decoration: none;
+}
+
+.navbar .active {
+  color: gold;
+}
+
+.navbar .pending {
+  color: #338;
+}
+
+.App {
+  margin: 0 auto;
+  width: 80%;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.person {
+  border: 3px solid #111;
+  border-radius: 5px;
+  width: 20em;
+  display: inline-block;
+  margin: 0 15px;
+  vertical-align: top;
+}
+
+.person-body {
+  background-color: #fff;
+  padding: 15px;
+  text-align: left;
+}
+
+.person-title {
+  background-color: #ccdcfd;
+  border-bottom: 2px  solid #111;
+}
+
+.person-title > * {
+  margin: 0;
+  padding: 15px;
+  text-align: center;
+}
+
+.person-avatar {
+  width: 100%;
+}
+
+.person-avatar img {
+  width: 100%;
+}
+
+.person-footer {
+  padding: 15px;
+  background-color: rgb(29, 42, 82);
+}
+
+.person-footer .link {
+  text-align: center;
+}
+
+.person-footer .link a {
+  color: #fff;
+}
+
+.tweets-container {
+  padding: 15px;
+  background-color: rgb(97, 125, 218);
+}
+
+.tweet {
+  margin-bottom: 15px;
+  color: rgb(202, 203, 253);
+  padding: 15px;
+  background-color: rgb(11, 37, 121);
+  border: 3px solid #ddd;
+  border-radius: 10px;
+  font-style: italic;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.tweet-body {
+  max-height: 100px;
+  overflow: hidden;
+}
+
+.tweet-body.collapsed {
+  max-height: none;
+  overflow: initial;
+}
+
+.tweet-body {
+  margin-bottom: 10px;
+}
+
+.tweet button {
+  background-color: #007bff; /* Blue background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.tweet button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.tweets-container h4 {
+  color: #fff;
+}
+
+.tweet-gallery {
+  position: relative;
+  width: 100%;
+  background-color: rgb(97, 125, 218);
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.ms-1 {
+  margin-left: 5px;
+}
+
+.ms-2 {
+  margin-left: 10px;
+}
+
+.mb-1 {
+  margin-bottom: 5px;
+}
+
+.mb-2 {
+  margin-bottom: 10px;
+}
+
+.mt-1 {
+  margin-top: 5px;
+}
+
+.mt-2 {
+  margin-top: 10px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Form Container Styles */
+.form-container {
+  border: 2px solid #ddd; /* Border around the form */
+  border-radius: 10px; /* Rounded edges */
+  padding: 20px; /* Padding inside the form */
+  background-color: #f0f8ff; /* Light background color */
+  max-width: 600px; /* Limit the width of the form */
+  margin: auto; /* Center the form */
+}
+
+/* Input Field Styles */
+.form-container label {
+  display: block; /* Stack labels on top of inputs */
+  margin: 10px 0 5px; /* Add margin above and below labels */
+}
+
+/* Input Fields */
+.form-container input,
+.form-container select {
+  width: 100%; /* Full width for inputs */
+  padding: 10px; /* Padding inside input fields */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 5px; /* Rounded edges */
+  box-sizing: border-box;
+}
+
+/* Create Button Styles */
+.form-container button[type="submit"] {
+  padding: 10px 15px; /* Smaller padding for the button */
+  background-color: #007bff; /* Button background color */
+  color: white; /* Button text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded edges */
+  cursor: pointer; /* Change cursor on hover */
+  font-weight: bold; /* Bold text */
+  margin-top: 20px;
+}
+
+.form-container button[type="submit"]:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  margin: 10px;
+  border: 3px solid #ddd;
+  border-radius: 15px;
+  width: 150px;
+  background-color: #f9f9f9;
+}
+
+.image-preview__img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.image-preview__remove-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.image-preview__remove-btn:hover {
+  background-color: darkred;
+}
+
+.item-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+/* New CSS to display pictures in a single row */
+.pictures-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 15px;
+  overflow-x: auto; /* Enables horizontal scrolling if needed */
+}
+
+.tweet-input {
+  margin-bottom: 15px; /* Add vertical spacing between tweets */
+}
+
+.tweet-input textarea {
+  width: 100%; /* Full width for textarea */
+  padding: 10px; /* Padding inside textarea */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 5px; /* Rounded edges */
+  box-sizing: border-box;
+}
+
+.remove-button {
+  background-color: red; /* Red background */
+  color: white; /* White text */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded edges */
+  padding: 5px 10px; /* Padding for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin-top: 10px; /* Top margin for spacing */
+  display: inline-block; /* Make it inline-block for proper alignment */
+}
+
+.remove-button:hover {
+  background-color: darkred; /* Darker red on hover */
+}
+
+.add-tweet-button {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded edges */
+  padding: 10px 15px; /* Padding for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin-top: 10px; /* Margin for spacing */
+  display: inline-block; /* Make it inline-block for proper alignment */
+  font-weight: bold; /* Bold text */
+  transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.add-tweet-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+.person-display {
+  border: 2px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.name-header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px 10px 0 0;
+  margin: -20px -20px 20px -20px;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  max-width: 150px;
+  border-radius: 50%;
+}
+
+.person-info {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.pictures-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.picture-item {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.picture-item:hover {
+  transform: scale(1.05);
+}
+
+.generate-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.generate-button:hover {
+  background-color: #0056b3;
+}
+
+.generate-button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+.system-prompt-container {
+  margin-top: 20px;
+}
+
+.system-prompt {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.5;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0; /* Start hidden */
+  transition: opacity 0.3s ease-in-out; /* Fade in/out transition */
+  pointer-events: none; /* Prevent interaction when hidden */
+}
+
+.popup.show {
+  opacity: 1; /* Show the pop-up */
+  pointer-events: auto; /* Allow interaction when visible */
+}
+
+.popup-content {
+  background-color: white;
+  border-radius: 10px;
+  position: relative;
+}
+
+.full-image {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.close-button:hover {
+  background-color: darkred;
+}
+
+.close-button::after {
+  content: 'X'; /* Display 'X' instead of 'Close' */
+}
+.new-message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message-text {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px; /* Set a fixed width */
+  align-self: flex-start; /* Ensures the button aligns to the left */
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-button:disabled {
+  background-color: #707d9c;
+  cursor:not-allowed;
+
+}
+
+.image-preview-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.message-card {
+  border-radius: 10px;
+  padding: 0; /* Remove overall padding */
+  margin: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6); /* Gradient for header */
+}
+
+.assistant-theme .message-header {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6); /* Darker gradient */
+  color: #fff;
+}
+
+.user-theme .message-header {
+  background: linear-gradient(135deg, #d6d9ff, #595fa6); /* Lighter gradient */
+}
+
+.message-card .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message-card .role {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.message-body {
+  font-size: 1em;
+  background-color: #1e3a8a; /* Uniform color in the body */
+  padding: 15px;
+  color: #adb8e7;
+  margin: 0; /* Remove any margins between header and body */
+  line-height: 1.75;
+  font-size: 1.125rem;
+}
+
+.message-body .code-section {
+  background-color: #fff;
+  padding: 20px;
+}
+
+.user-theme .message-body {
+  background-color: #d6d9ff; /* Lighter uniform color for the body */
+  color: #000;
+  border-radius: 0 0 10px 10px;
+}
+
+.message-footer {
+  font-size: 0.9em;
+  justify-content: space-between;
+  padding: 15px;
+  color: #fff;
+  border-radius: 0 0 10px 10px;
+}
+
+.assistant-theme .message-footer {
+  background-color: #102355;
+}
+
+.user-theme .message-footer {
+  padding: 0;
+  border-radius: 0 0 10px 10px;
+}
+
+.message-card .regenerate-row {
+  margin-top: 10px;
+  display: block;
+}
+
+.message-card button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.message-card button:hover {
+  background-color: #0056b3;
+}
+
+.message-card button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+.chat {
+  padding: 20px;
+  width: 80%;
+}
+
+.prompt {
+  width: 100%;
+  border: 2px solid lightblue;
+  border-radius: 5px;
+  min-height: 150px;
+  box-sizing: border-box;
+  padding: 15px;
+}
+
+.prompt:focus {
+  outline: none !important;
+  border: 2px solid rgb(87, 103, 184);
+}
+
+.settings-panel .base-url {
+  margin-bottom: 10px;
+}
+
+.settings-panel .base-url label {
+  margin-right: 10px;
+}
+
+.settings-panel .base-url input {
+  border: 2px solid lightblue;
+  border-radius: 5px;
+  width: 350px;
+  padding: 15px;
+}
+
+.settings-panel .base-url input:focus {
+  outline: none !important;
+  border: 2px solid rgb(87, 103, 184);
+}
+
