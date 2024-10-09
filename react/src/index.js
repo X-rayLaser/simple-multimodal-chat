@@ -6,7 +6,7 @@ import { Personas } from './App';
 import PersonDisplay from './PersonDisplay';
 import NewPersonForm from './NewPersonForm';
 import reportWebVitals from './reportWebVitals';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { initialState, combinedReducer } from './reducers';
 import { createHashRouter, RouterProvider, useLoaderData, Link, NavLink, 
   Outlet, Form, redirect, useNavigation, useNavigate
@@ -19,7 +19,19 @@ import { ChatContainer } from './Chat';
 import { useSubmit, useRevalidator } from "react-router-dom";
 import { useState, useEffect } from 'react';
 
-const store = createStore(combinedReducer, initialState);
+
+const saver = store => next => action => {
+  let result = next(action)
+  localStorage['app-state'] = JSON.stringify(store.getState())
+  return result
+}
+const storeFactory = (initialState) =>
+  applyMiddleware(saver)(createStore)(
+    combinedReducer,
+    (localStorage['app-state']) ? JSON.parse(localStorage['app-state']) : initialState
+  )
+
+const store = storeFactory(initialState);
 
 
 class ResponseGenerator {

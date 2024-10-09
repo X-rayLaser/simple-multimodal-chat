@@ -9,6 +9,7 @@ services:
       - ./fastapi:/fastapi
     ports:
       - "8000:8000"
+    env_file: ".env"
   react-app:
     build:
       context: .

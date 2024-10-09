@@ -4,6 +4,27 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import openai
+from openai import DefaultHttpxClient
+import os
+
+
+http_proxy = os.environ.get("http_proxy_url")
+https_proxy = os.environ.get("https_proxy_url", http_proxy)
+print("http proxy", http_proxy)
+print("https proxy", https_proxy)
+
+if http_proxy or https_proxy:
+    proxies = {
+        "http://": http_proxy,
+        "https://": https_proxy,
+    }
+else:
+    proxies = None
+
+http_client = DefaultHttpxClient(
+    proxies=proxies
+)
+
 
 origins = [
     "http://localhost:3000",
@@ -30,7 +51,8 @@ def generate_response(job):
     client = openai.OpenAI(
         base_url=f"{job.base_url}/v1",
         api_key="sk-no-key-required",
-        timeout=timeout
+        timeout=timeout,
+        http_client=http_client
     )
 
     stream = client.chat.completions.create(
@@ -41,9 +63,7 @@ def generate_response(job):
     )
     print("about to start reading stream")
     for chunk in stream:
-        print("chunk:", chunk)
         chunk_text = chunk.choices[0].delta.content or ""
-        print(chunk_text, end="")
         yield chunk_text
 
 

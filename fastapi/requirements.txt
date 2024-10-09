@@ -1,3 +1,4 @@
 openai
 fastapi[standard]
 pydantic
+httpx[socks]

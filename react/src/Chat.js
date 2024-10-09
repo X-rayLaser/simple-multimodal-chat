@@ -59,6 +59,11 @@ export function ChatContainer({ store, responseGenerator }) {
         store.dispatch(trimHistory(msgIdx));
         generate(store, responseGenerator, revalidator);
     }
+
+    function handleReset() {
+        store.dispatch(trimHistory(0));
+        revalidator.revalidate();
+    }
     return (
         <div className="chat">
             <form className="settings-panel">
@@ -83,13 +88,14 @@ export function ChatContainer({ store, responseGenerator }) {
                 onPromptChange={handlePromptChange}
                 onGenerate={handleGenerate}
                 onRegenerate={handleRegenerate}
-                onPicturesUpload={handlePicturesUpload} />
+                onPicturesUpload={handlePicturesUpload}
+                onReset={handleReset} />
         </div>
     );
 }
 
 export function Chat({ systemMessage, history, prompt, pictures, inProgress, partialResponse, 
-                       onSystemMessageChange, onPromptChange, onGenerate, onRegenerate, onPicturesUpload }) {
+                       onSystemMessageChange, onPromptChange, onGenerate, onRegenerate, onPicturesUpload, onReset}) {
 
     let messages = history.map((msg, idx) => {
         let element = (idx % 2 === 0 ? <UserMessage text={msg.text} />
@@ -164,6 +170,14 @@ export function Chat({ systemMessage, history, prompt, pictures, inProgress, par
                 )}
                 </div>
                 <button type="submit" disabled={buttonDisabled} className="submit-button">Generate</button>
+                <button 
+                    type="button"
+                    className="submit-button ms-2" 
+                    disabled={inProgress}
+                    onClick={onReset}
+                    >
+                    Reset chat
+                </button>
             </form>
         </div>
     );
