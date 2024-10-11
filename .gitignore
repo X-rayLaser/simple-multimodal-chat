@@ -4,4 +4,5 @@ react/node_modules/
 *.png
 *.jpg
 *.jpeg
+*.env
 *package-lock.json

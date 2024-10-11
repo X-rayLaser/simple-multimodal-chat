@@ -1,8 +1,9 @@
+import { useState } from "react";
+import { useLoaderData, useRevalidator } from "react-router-dom";
 import { beginGeneratingResponse, appendResponse, markGenerationCompleted, 
     changePrompt, changeSystemMessage, trimHistory, changeServerUrl, addPicturesToPrompt
 } from "./actions";
 import { UserMessage, AssistantMessage, MessageInProgress } from "./messages";
-import { useLoaderData, useRevalidator } from "react-router-dom";
 import ImagePreview from "./ImagePreview";
 
 
@@ -33,25 +34,15 @@ export function ChatContainer({ store, responseGenerator }) {
         revalidator.revalidate();
     }
 
-    function handleGenerate(e) {
+    function handleGenerate(e, systemMessage, prompt) {
+        store.dispatch(changeSystemMessage(systemMessage))
+        store.dispatch(changePrompt(prompt));
         generate(store, responseGenerator, revalidator);
         e.preventDefault();
     }
 
-    function handlePromptChange(e) {
-        let value = e.target.value;
-        store.dispatch(changePrompt(value));
-        revalidator.revalidate();
-    }
-
     function handlePicturesUpload(dataURIs) {
         store.dispatch(addPicturesToPrompt(dataURIs));
-        revalidator.revalidate();
-    }
-    
-    function handleSystemMessageChange(e) {
-        let value = e.target.value;
-        store.dispatch(changeSystemMessage(value));
         revalidator.revalidate();
     }
 
@@ -77,15 +68,11 @@ export function ChatContainer({ store, responseGenerator }) {
                         onChange={handleBaseUrlChange} />
                 </div>
             </form>
-            <Chat
-                systemMessage={systemMessage} 
+            <Chat 
                 history={history}
-                prompt={prompt}
                 pictures={images}
                 inProgress={inProgress}
                 partialResponse={partialResponse}
-                onSystemMessageChange={handleSystemMessageChange}
-                onPromptChange={handlePromptChange}
                 onGenerate={handleGenerate}
                 onRegenerate={handleRegenerate}
                 onPicturesUpload={handlePicturesUpload}
@@ -94,8 +81,11 @@ export function ChatContainer({ store, responseGenerator }) {
     );
 }
 
-export function Chat({ systemMessage, history, prompt, pictures, inProgress, partialResponse, 
-                       onSystemMessageChange, onPromptChange, onGenerate, onRegenerate, onPicturesUpload, onReset}) {
+export function Chat({ history, pictures, inProgress, partialResponse, 
+                       onGenerate, onRegenerate, onPicturesUpload, onReset}) {
+
+    let [systemMessage, setSystemMessage] = useState("");
+    let [prompt, setPrompt] = useState("");
 
     let messages = history.map((msg, idx) => {
         let element = (idx % 2 === 0 ? <UserMessage text={msg.text} />
@@ -121,6 +111,21 @@ export function Chat({ systemMessage, history, prompt, pictures, inProgress, par
         });
     };
 
+    function handlePromptChange(e) {
+        let value = e.target.value;
+        setPrompt(value);
+    }
+
+    function handleSystemMessageChange(e) {
+        let value = e.target.value;
+        setSystemMessage(value);
+    }
+
+    function handleSubmit(e) {
+        onGenerate(e, systemMessage, prompt);
+        setPrompt("");
+    }
+
     const removePicture = (index) => {
         
     };
@@ -135,7 +140,7 @@ export function Chat({ systemMessage, history, prompt, pictures, inProgress, par
                 value={systemMessage} 
                 disabled={inProgress}
                 className="prompt"
-                onChange={onSystemMessageChange}
+                onChange={handleSystemMessageChange}
                 placeholder="Enter your system message here"></textarea>
             <div>{messages}</div>
 
@@ -143,12 +148,12 @@ export function Chat({ systemMessage, history, prompt, pictures, inProgress, par
                 <AssistantMessage text={partialResponse} />
             )}
 
-            <form onSubmit={onGenerate}>
+            <form onSubmit={handleSubmit}>
                 {!inProgress && finishedResponse && (
                     <textarea 
                         className="mt-2 prompt mb-2" 
                         value={prompt} 
-                        onInput={onPromptChange}
+                        onInput={handlePromptChange}
                         placeholder="Enter your prompt text here"></textarea>
                 )}
                 <div>
