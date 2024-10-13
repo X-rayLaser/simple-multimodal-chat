@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLoaderData, useRevalidator } from "react-router-dom";
-import { beginGeneratingResponse, appendResponse, markGenerationCompleted, 
-    changePrompt, changeSystemMessage, trimHistory, changeServerUrl, addPicturesToPrompt
+import { beginGeneratingResponse, appendResponse, markGenerationCompleted,
+    markGenerationFailed, changePrompt, changeSystemMessage, trimHistory, 
+    changeServerUrl, addPicturesToPrompt
 } from "./actions";
 import { UserMessage, AssistantMessage, MessageInProgress } from "./messages";
 import ImagePreview from "./ImagePreview";
@@ -17,14 +18,33 @@ function generate(store, generator, revalidator) {
         }, function() {
             store.dispatch(markGenerationCompleted());
             revalidator.revalidate();
-        });
+    }).catch(err => {
+        console.error(err);
+        store.dispatch(markGenerationFailed(err.message));
+        revalidator.revalidate();
+    });
     revalidator.revalidate();
+}
+
+
+function GenerationError({ error }) {
+    let [fade, setFade] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => setFade(true, 500));
+        return () => null;
+    });
+
+    let fadeClass = fade ? "fade-in" : "fade-out";
+    return (
+        <div className={`error mt-2 mb-2 ${fadeClass}`}>{error}</div>
+    );
 }
 
 
 export function ChatContainer({ store, responseGenerator }) {
     let data = useLoaderData();
-    let { serverBaseUrl, systemMessage, history, prompt, images, inProgress, partialResponse } = data;
+    let { serverBaseUrl, systemMessage, history, prompt, images, inProgress, partialResponse, generationError } = data;
 
     let revalidator = useRevalidator();
 
@@ -73,6 +93,7 @@ export function ChatContainer({ store, responseGenerator }) {
                 pictures={images}
                 inProgress={inProgress}
                 partialResponse={partialResponse}
+                generationError={generationError}
                 onGenerate={handleGenerate}
                 onRegenerate={handleRegenerate}
                 onPicturesUpload={handlePicturesUpload}
@@ -81,7 +102,7 @@ export function ChatContainer({ store, responseGenerator }) {
     );
 }
 
-export function Chat({ history, pictures, inProgress, partialResponse, 
+export function Chat({ history, pictures, inProgress, partialResponse, generationError,
                        onGenerate, onRegenerate, onPicturesUpload, onReset}) {
 
     let [systemMessage, setSystemMessage] = useState("");
@@ -136,6 +157,7 @@ export function Chat({ history, pictures, inProgress, partialResponse,
     
     return (
         <div>
+            {generationError && <GenerationError error={generationError} />}
             <textarea
                 value={systemMessage} 
                 disabled={inProgress}

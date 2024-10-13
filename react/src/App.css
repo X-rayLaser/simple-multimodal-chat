@@ -658,3 +658,8 @@
   border: 2px solid rgb(87, 103, 184);
 }
 
+.error {
+  padding: 20px;
+  background-color: rgb(204, 99, 99);
+  border-radius: 10px;
+}

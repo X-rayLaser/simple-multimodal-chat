@@ -4,7 +4,8 @@ const GENERATE_PROMPT = "generate_prompt";
 const GENERATION_IN_PROGRESS = "generation_in_progress";
 const BEGIN_GENERATING_RESPONSE = "begin_generating_response";
 const APPEND_RESPONSE = "append_response";
-const MARK_GENERATION_AS_COMPLETED = "mark_generation_as_completed"
+const MARK_GENERATION_AS_COMPLETED = "mark_generation_as_completed";
+const MARK_GENERATION_AS_FAILED = "mark_generation_as_failed";
 const CHANGE_PROMPT = "change_prompt";
 const CHANGE_SYSTEM_MESSAGE = "change_system_message";
 const TRIM_HISTORY = "trim_history";
@@ -71,6 +72,11 @@ const addPicturesToPrompt = pictures => ({
     pictures
 });
 
+const markGenerationFailed = (error) => ({
+    type: MARK_GENERATION_AS_FAILED,
+    error
+});
+
 export {
     toggleCollapsed,
     addPerson,
@@ -84,6 +90,7 @@ export {
     trimHistory,
     changeServerUrl,
     addPicturesToPrompt,
+    markGenerationFailed,
 
     GENERATION_IN_PROGRESS,
     TOGGLE_COLLAPSED,
@@ -92,6 +99,7 @@ export {
     BEGIN_GENERATING_RESPONSE,
     APPEND_RESPONSE,
     MARK_GENERATION_AS_COMPLETED,
+    MARK_GENERATION_AS_FAILED,
     CHANGE_PROMPT,
     CHANGE_SYSTEM_MESSAGE,
     TRIM_HISTORY,

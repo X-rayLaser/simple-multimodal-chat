@@ -16,7 +16,7 @@ import {  generatePrompt, setGenerationInProgress, addPerson,
   changeSystemMessage
 } from './actions';
 import { ChatContainer } from './Chat';
-import { useSubmit, useRevalidator } from "react-router-dom";
+import { useSubmit, useRevalidator, useRouteError } from "react-router-dom";
 import { useState, useEffect } from 'react';
 
 
@@ -82,7 +82,7 @@ class ResponseGenerator {
       }
     }
 
-    generateCompletion("http://localhost:8000/make_response/", preparedMessages);
+    return generateCompletion("http://localhost:8000/make_response/", preparedMessages);
   }
   
 }
@@ -226,9 +226,25 @@ async function finishGenerationAction({ request, params }) {
   return redirect(`/personas/${id}/`);
 }
 
+function RootErrorPage() {
+  const error = useRouteError();
+  console.error(error);
+
+  return (
+    <div id="error-page">
+      <h1>Oops!</h1>
+      <p>Sorry, an unexpected error has occurred.</p>
+      <p>
+        <i>{error.statusText || error.message}</i>
+      </p>
+    </div>
+  );
+}
+
 const router = createHashRouter([{
   path: "/",
   element: <Root />,
+  errorElement: <RootErrorPage />,
   children: [{
     index: true,
     element: <h2>Choose an article to see its text</h2>

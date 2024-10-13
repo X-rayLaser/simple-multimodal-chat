@@ -1,6 +1,7 @@
 import { TOGGLE_COLLAPSED, ADD_PERSON, GENERATE_PROMPT, 
     GENERATION_IN_PROGRESS, BEGIN_GENERATING_RESPONSE, 
-    APPEND_RESPONSE, MARK_GENERATION_AS_COMPLETED, CHANGE_PROMPT, CHANGE_SYSTEM_MESSAGE,
+    APPEND_RESPONSE, MARK_GENERATION_AS_COMPLETED, MARK_GENERATION_AS_FAILED,
+    CHANGE_PROMPT, CHANGE_SYSTEM_MESSAGE,
     TRIM_HISTORY, CHANGE_SERVER_BASE_URL, ADD_PICTURES_TO_PROMPT
 } from "./actions";
 
@@ -15,7 +16,8 @@ const initialState = {
         images: [],
         inProgress: false,
         partialResponse: "",
-        serverBaseUrl: ""
+        serverBaseUrl: "",
+        generationError: ""
     }
 };
 
@@ -112,6 +114,7 @@ const chatReducer = (state={}, action) => {
             ...chat,
             inProgress: true,
             partialResponse: "",
+            generationError: "",
             prompt: "",
             images: [],
             history
@@ -127,6 +130,12 @@ const chatReducer = (state={}, action) => {
             history: [...chat.history, { text: chat.partialResponse, images: [] }],
             inProgress: false,
         };
+    } else if (action.type === MARK_GENERATION_AS_FAILED) {
+        return {
+            ...chat,
+            inProgress: false,
+            generationError: action.error
+        }
     } else {
         return {...state}
     }
@@ -140,7 +149,8 @@ const combinedReducer = (state={}, action) => {
         action.type === CHANGE_SYSTEM_MESSAGE ||
         action.type === TRIM_HISTORY ||
         action.type === CHANGE_SERVER_BASE_URL ||
-        action.type === ADD_PICTURES_TO_PROMPT)
+        action.type === ADD_PICTURES_TO_PROMPT ||
+        action.type === MARK_GENERATION_AS_FAILED)
     {
         return {
             ...state,
