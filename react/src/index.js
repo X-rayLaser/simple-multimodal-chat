@@ -145,7 +145,7 @@ function PersonDetail({ store }) {
     images: [],
     text: preparePrompt(person)
   }];
-  let baseUrl = store.chat.serverBaseUrl;
+  let baseUrl = store.getState().chat.serverBaseUrl;
 
   const handleGenerate = person => {
     submit({ person }, {
@@ -186,7 +186,7 @@ function preparePrompt(person) {
   let tweetSection = (tweets.length > 0) ? makeTweetSection(tweetString) : "";
 
   return `
-Please, generate a system prompt of a fictional (AI) character based on the following data.
+Please, generate a system message that instructs a AI character to behave based on the following data.
 
 Attributes:
 - name: ${person.name}
