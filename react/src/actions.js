@@ -11,7 +11,7 @@ const CHANGE_SYSTEM_MESSAGE = "change_system_message";
 const TRIM_HISTORY = "trim_history";
 const CHANGE_SERVER_BASE_URL = "change_server_base_url";
 const ADD_PICTURES_TO_PROMPT = "add_pictures_to_prompt";
-
+const ADD_SYSTEM_PROMPT_TOKEN = "append_system_prompt_token";
 
 const toggleCollapsed = (personId, tweetId) => ({
     type: TOGGLE_COLLAPSED,
@@ -77,6 +77,12 @@ const markGenerationFailed = (error) => ({
     error
 });
 
+const addSystemPromptToken = (person, token) => ({
+    type: ADD_SYSTEM_PROMPT_TOKEN,
+    person,
+    token
+});
+
 export {
     toggleCollapsed,
     addPerson,
@@ -91,6 +97,7 @@ export {
     changeServerUrl,
     addPicturesToPrompt,
     markGenerationFailed,
+    addSystemPromptToken,
 
     GENERATION_IN_PROGRESS,
     TOGGLE_COLLAPSED,
@@ -104,5 +111,6 @@ export {
     CHANGE_SYSTEM_MESSAGE,
     TRIM_HISTORY,
     CHANGE_SERVER_BASE_URL,
-    ADD_PICTURES_TO_PROMPT
+    ADD_PICTURES_TO_PROMPT,
+    ADD_SYSTEM_PROMPT_TOKEN
 }

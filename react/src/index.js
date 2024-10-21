@@ -13,7 +13,7 @@ import { createHashRouter, RouterProvider, useLoaderData, Link, NavLink,
 } from 'react-router-dom';
 import {  generatePrompt, setGenerationInProgress, addPerson, 
   beginGeneratingResponse, appendResponse, markGenerationCompleted,
-  changeSystemMessage
+  changeSystemMessage, addSystemPromptToken
 } from './actions';
 import { ChatContainer } from './Chat';
 import { useSubmit, useRevalidator, useRouteError } from "react-router-dom";
@@ -35,8 +35,7 @@ const store = storeFactory(initialState);
 
 
 class ResponseGenerator {
-  generate(onToken, onCompletion) {
-    let { systemMessage, history, serverBaseUrl } = store.getState().chat;
+  generate(systemMessage, history, serverBaseUrl, onToken, onCompletion) {
     let preparedHistory = history.map((msg, idx) => {
       let role = idx % 2 === 0 ? "user" : "assistant";
       let texts = [{ type: "text", text: msg.text }];
@@ -140,15 +139,31 @@ function personDetailLoader({ params }) {
 function PersonDetail({ store }) {
   let person = useLoaderData();
   let submit = useSubmit();
+  let revalidator = useRevalidator();
+
+  let history = [{
+    images: [],
+    text: preparePrompt(person)
+  }];
+  let baseUrl = store.chat.serverBaseUrl;
 
   const handleGenerate = person => {
     submit({ person }, {
       method: "post", encType: "application/json"
     });
 
-    setTimeout(() => submit({ person }, {
-      method: "post", encType: "application/json", action: `/personas/${person.id}/finishGeneration/`
-    }), 3333)
+    responseGenerator.generate("", history, baseUrl, token => {
+      store.dispatch(addSystemPromptToken(person, token));
+      revalidator.revalidate();
+    }, () => {
+
+    }).catch(error => {
+      console.error(error);
+    }).finally(() => {
+      submit({ person }, {
+        method: "post", encType: "application/json", action: `/personas/${person.id}/finishGeneration/`
+      })
+    });
   }
 
   const handleStartChat = (system_prompt) => {
@@ -162,6 +177,24 @@ function PersonDetail({ store }) {
       <PersonDisplay person={person} onGenerate={handleGenerate} onStartChat={handleStartChat} />
     </div>
   );
+}
+
+function preparePrompt(person) {
+  let tweets = person.tweets || [];
+  let tweetString = tweets.join("\n\n");
+  const makeTweetSection = (text) => `\nAlso, take into account the following tweets:\n\n${text}`;
+  let tweetSection = (tweets.length > 0) ? makeTweetSection(tweetString) : "";
+
+  return `
+Please, generate a system prompt of a fictional (AI) character based on the following data.
+
+Attributes:
+- name: ${person.name}
+- age: ${person.age}
+- education: ${person.education}
+${tweetSection}
+
+Be as creative and as imaginative as possible`;
 }
 
 function NewPersonComponent({ store }) {
@@ -188,6 +221,7 @@ function NewPersonComponent({ store }) {
 async function startChatAction({ request }) {
   let data = await request.json();
   let system_prompt = data.system_prompt;
+  console.log("system prompt", system_prompt)
   store.dispatch(changeSystemMessage(system_prompt));
   return redirect(`/chat/`);
 }

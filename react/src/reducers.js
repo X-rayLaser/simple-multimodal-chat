@@ -2,7 +2,7 @@ import { TOGGLE_COLLAPSED, ADD_PERSON, GENERATE_PROMPT,
     GENERATION_IN_PROGRESS, BEGIN_GENERATING_RESPONSE, 
     APPEND_RESPONSE, MARK_GENERATION_AS_COMPLETED, MARK_GENERATION_AS_FAILED,
     CHANGE_PROMPT, CHANGE_SYSTEM_MESSAGE,
-    TRIM_HISTORY, CHANGE_SERVER_BASE_URL, ADD_PICTURES_TO_PROMPT
+    TRIM_HISTORY, CHANGE_SERVER_BASE_URL, ADD_PICTURES_TO_PROMPT, ADD_SYSTEM_PROMPT_TOKEN
 } from "./actions";
 
 const promptMock = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
@@ -44,11 +44,15 @@ const personReducer = (state={}, action) => {
             generating: true
         }
     } else if (action.type === GENERATE_PROMPT) {
-        let system_prompt = generateSystemPrompt(action.person);
         return {
             ...state,
-            system_prompt,
             generating: false
+        }
+    } else if (action.type === ADD_SYSTEM_PROMPT_TOKEN) {
+        let system_prompt = state.system_prompt || "";
+        return {
+            ...state,
+            system_prompt: system_prompt + action.token
         }
     } else {
         return {...state};
@@ -62,7 +66,9 @@ const personListReducer = (state=[], action) => {
         );
     } else if (action.type === ADD_PERSON) {
         return [...state, action.person];
-    } else if (action.type === GENERATE_PROMPT || action.type === GENERATION_IN_PROGRESS) {
+    } else if (action.type === GENERATE_PROMPT || 
+                action.type === GENERATION_IN_PROGRESS ||
+                action.type === ADD_SYSTEM_PROMPT_TOKEN) {
         return state.map(person => person.id === action.person.id ? personReducer(person, action) : {...person});
     } else {
         return [...state];

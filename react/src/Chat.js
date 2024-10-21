@@ -10,8 +10,9 @@ import ImagePreview from "./ImagePreview";
 
 function generate(store, generator, revalidator) {
     store.dispatch(beginGeneratingResponse());
-    let { newSysMsg, newHistory } = store.getState().chat;
-    generator.generate(
+    let { systemMessage, history, serverBaseUrl } = store.getState().chat;
+
+    generator.generate(systemMessage, history, serverBaseUrl,
         function(token) {
             store.dispatch(appendResponse(token));
             revalidator.revalidate();
@@ -89,6 +90,7 @@ export function ChatContainer({ store, responseGenerator }) {
                 </div>
             </form>
             <Chat 
+                defaultSystemMessage={systemMessage}
                 history={history}
                 pictures={images}
                 inProgress={inProgress}
@@ -102,10 +104,10 @@ export function ChatContainer({ store, responseGenerator }) {
     );
 }
 
-export function Chat({ history, pictures, inProgress, partialResponse, generationError,
+export function Chat({ defaultSystemMessage, history, pictures, inProgress, partialResponse, generationError,
                        onGenerate, onRegenerate, onPicturesUpload, onReset}) {
 
-    let [systemMessage, setSystemMessage] = useState("");
+    let [systemMessage, setSystemMessage] = useState(defaultSystemMessage);
     let [prompt, setPrompt] = useState("");
 
     let messages = history.map((msg, idx) => {
